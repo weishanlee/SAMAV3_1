@@ -1,0 +1,181 @@
+Initial score = 217.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -4.00000
+New score = 213.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -3.00000
+New score = 210.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -1.00000
+New score = 209.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -5.00000
+New score = 204.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -14.00000
+New score = 192.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -6.00000
+New score = 186.00000
+
+2021 / 8 / 3   0 : 2 : 59
+Delta score = -2.00000
+New score = 184.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -1.00000
+New score = 183.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -3.00000
+New score = 180.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -5.00000
+New score = 175.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -3.00000
+New score = 172.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -2.00000
+New score = 170.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -1.00000
+New score = 169.00000
+
+2021 / 8 / 3   0 : 3 : 0
+Delta score = -9.00000
+New score = 160.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -3.00000
+New score = 157.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -5.00000
+New score = 152.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -1.00000
+New score = 151.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -1.00000
+New score = 150.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -21.00000
+New score = 129.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -5.00000
+New score = 124.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -5.00000
+New score = 122.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -2.00000
+New score = 120.00000
+
+2021 / 8 / 3   0 : 3 : 1
+Delta score = -2.00000
+New score = 118.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -2.00000
+New score = 116.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -5.00000
+New score = 111.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -1.00000
+New score = 110.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -3.00000
+New score = 107.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -1.00000
+New score = 106.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -6.00000
+New score = 100.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -1.00000
+New score = 99.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -1.00000
+New score = 98.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -2.00000
+New score = 97.00000
+
+2021 / 8 / 3   0 : 3 : 2
+Delta score = -1.00000
+New score = 96.00000
+
+2021 / 8 / 3   0 : 3 : 3
+Delta score = -1.00000
+New score = 95.00000
+
+2021 / 8 / 3   0 : 3 : 3
+Delta score = -1.00000
+New score = 94.00000
+
+2021 / 8 / 3   0 : 3 : 4
+Delta score = -8.00000
+New score = 90.00000
+
+2021 / 8 / 3   0 : 3 : 4
+Delta score = -5.00000
+New score = 89.00000
+
+2021 / 8 / 3   0 : 3 : 5
+Delta score = -2.00000
+New score = 88.00000
+
+2021 / 8 / 3   0 : 3 : 5
+Delta score = -1.00000
+New score = 87.00000
+
+2021 / 8 / 3   0 : 3 : 5
+Delta score = -1.00000
+New score = 86.00000
+
+2021 / 8 / 3   0 : 3 : 6
+Delta score = -3.00000
+New score = 84.00000
+
+2021 / 8 / 3   0 : 4 : 14
+Delta score = -1.00000
+New score = 83.00000
+
+2021 / 8 / 3   0 : 4 : 54
+Delta score = -3.00000
+New score = 82.00000
+
+2021 / 8 / 3   0 : 5 : 35
+Delta score = -3.00000
+New score = 79.00000
+
+The initial total traveling time = 217.00000 min
+The optimal total traveling time = 79.00000 min
+The checked optimal total traveling time = 79.00000
