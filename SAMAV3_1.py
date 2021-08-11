@@ -8,6 +8,8 @@ Case 2: Travel distance or time for pairs of cities recorded in the following cs
         (1) carTime.csv records time required for driving a car.
         (2) busTime.csv records time required for taking a bus.
         (3) pedestrianTime.csv records time required by walking between a pair of cities.
+        (4) carDistance.csv records distance between a pair of sites by car.
+        (5) pedestrianDistance.csv records distance between a pair of sites by foot.
         The optimal route is found based on the Simulated Annealing and Metropolis Algorithm. 
 Version 3_1: 1. Write to log.txt automatically.
              2. Add funcion definition plotRout
@@ -98,8 +100,12 @@ def writeLog(msg):
     with open('log.txt', 'a+') as the_file:
         print(msg)
         the_file.write(msg)
-        
+
 import os, psutil
+# If previous log.txt file exists, remove it.
+if os.path.exists("./log.txt"):
+    os.remove("./log.txt")
+        
 def cpu_stats():
     pid = os.getpid()
     py = psutil.Process(pid)
@@ -118,14 +124,14 @@ scoreVsTime = True
 # case = 3: pedestrin time.
 # case = 4: car distance.
 # cas3 = 5: pedestrian distance.
-case = 1
+case = 4
 
 ## Parameters for Simulated annealing
 Tmax = 1.0
 Tmin = 1e-2
 tau = 1e3
-targetScore = 79 # carTime 79. busTime = 118 and  pedestrianTime = 116
-                   # carDistance 14.1
+targetScore = 13.92 # carTime 79. busTime = 118.  pedestrianTime = 116.
+                    # carDistance 13.916. pedestrianDistance = 7.918
 ###############################################################################
 
 # Load world heritage sites locations
@@ -183,6 +189,10 @@ score = distance(randomList, rCoor)
 initScore = score
 minScore = initScore
 msg = "Initial score = {:.5f}\n".format(initScore)
+
+
+
+# Write the log.txt file for the first time.
 writeLog(msg)
 
 # Set up the graphics
@@ -362,7 +372,7 @@ ax.xaxis.set_minor_locator(minorLocatorX) # add minor ticks on x axis
 ax.yaxis.set_minor_locator(minorLocatorY) # add minor ticks on y axis
 plt.grid(True)
 #plt.xlim(-20000,500000)
-plt.savefig("fig1.eps")
+plt.savefig("scoreVsTime.eps")
 plt.show()   
 
 scoreCheck = distance(randomList, rCoor)
