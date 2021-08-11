@@ -9,7 +9,8 @@ Case 2: Travel distance or time for pairs of cities recorded in the following cs
         (2) busTime.csv records time required for taking a bus.
         (3) pedestrianTime.csv records time required by walking between a pair of cities.
         The optimal route is found based on the Simulated Annealing and Metropolis Algorithm. 
-Version 3_1: Write to log.txt automatically.
+Version 3_1: 1. Write to log.txt automatically.
+             2. Add funcion definition plotRout
 """
 from math import exp
 import numpy as np
@@ -64,6 +65,34 @@ def outPutSitesOrder(randomList):
 
     sitesOrder.to_csv(sitesOrder_file, sep=',', encoding='utf-8', index=False) 
     sitesOrder_file.close()
+
+def plotRoute(rr, sites):
+    x = []
+    y = []
+    n = [int(num) for num in rCoor[:,3].tolist()]
+
+    for i in range(N+1):
+        if i == N:
+            x.append( sites.loc[n[0]].X )
+            y.append( sites.loc[n[0]].Y )
+        else:
+            x.append( sites.loc[n[i]].X )
+            y.append( sites.loc[n[i]].Y )
+    fig, ax = plt.subplots()
+    ax.title.set_text("Optimal Tour Path")
+
+    ax.plot(x,y,'k-')
+    ax.scatter(x[0],y[0],c='blue')
+    ax.scatter(x[1:-1],y[1:-1],c='red')
+
+    for i, txt in enumerate(n):
+        ax.annotate(txt, (x[i], y[i]))
+
+    ax.set_xlabel("Longitude",size = 12)
+    ax.set_ylabel("Latitude",size = 12)
+    ax.ticklabel_format(useOffset=False)
+    plt.grid(True)
+    plt.savefig("optimalTourPath.eps")     
     
 def writeLog(msg):
     with open('log.txt', 'a+') as the_file:
@@ -81,7 +110,7 @@ def cpu_stats():
 ## If you need animation?
 animation = False
 ## If you need to record score vs time step?
-scoreVsTime = False
+scoreVsTime = True
 
 ## Set up Case and load matrix of time or distance for each pair of cities.
 # case = 1: car Time. 
@@ -89,13 +118,14 @@ scoreVsTime = False
 # case = 3: pedestrin time.
 # case = 4: car distance.
 # cas3 = 5: pedestrian distance.
-case = 3
+case = 1
 
 ## Parameters for Simulated annealing
 Tmax = 1.0
-Tmin = 1e-1
-tau = 1e4
-targetScore = 115
+Tmin = 1e-2
+tau = 1e3
+targetScore = 79 # carTime 79. busTime = 118 and  pedestrianTime = 116
+                   # carDistance 14.1
 ###############################################################################
 
 # Load world heritage sites locations
@@ -167,10 +197,6 @@ if animation == True:
 
 ## Simulated annealing
 ## Main loop
-#Tmax = 1.0
-#Tmin = 1e-1
-#tau = 1e4
-#targetScore = 115
 
 tRecord = []
 scoreRecord = []
@@ -335,9 +361,14 @@ else:
 ax.xaxis.set_minor_locator(minorLocatorX) # add minor ticks on x axis
 ax.yaxis.set_minor_locator(minorLocatorY) # add minor ticks on y axis
 plt.grid(True)
+#plt.xlim(-20000,500000)
 plt.savefig("fig1.eps")
 plt.show()   
 
 scoreCheck = distance(randomList, rCoor)
-msg = "The checked optimal total traveling time = {:.5f}".format(scoreCheck)
-writeLog(msg)
+if case == 1 or case == 2 or case == 3:
+    msg = "The checked optimal total traveling time = {:.5f} min".format(scoreCheck)
+    writeLog(msg)
+else:
+    msg = "The checked optimal total traveling distance = {:.5f} km".format(scoreCheck)
+    writeLog(msg)
