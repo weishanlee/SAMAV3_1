@@ -11,8 +11,9 @@ Case 2: Travel distance or time for pairs of cities recorded in the following cs
         (4) carDistance.csv records distance between a pair of sites by car.
         (5) pedestrianDistance.csv records distance between a pair of sites by foot.
         The optimal route is found based on the Simulated Annealing and Metropolis Algorithm. 
-Version 3_1: 1. Write to log.txt automatically.
-             2. Add funcion definition plotRout
+Version 3_2: 1. Write to log.txt automatically.
+             2. Add funcion definition plotRoute
+             3. Modify function distance
 """
 from math import exp
 import numpy as np
@@ -29,16 +30,87 @@ import os.path
 
 ## Function Definitions
 
-# Function to calculate the total distance or time of the tour
+# Function to calculate the updated total distance or time of the tour
+def distanceUpdate(i, j, oldScore, randomList, rCoor):
+    s = oldScore
+    lList = len(randomList)
+
+    if abs(i-j)==1:
+        if i<j:
+            if i == 0: 
+                iF = randomList[-1]
+            else:
+                iF   = randomList[i-1]
+    
+            iC  = randomList[i]
+            iN = randomList[i+1]
+    
+            jF = randomList[j-1]
+            jC = randomList[j]
+            if j == lList-1: 
+                jN = randomList[0]
+            else:
+                jN = randomList[j+1] 
+            
+            if iC!=jF or iN!=jC: print("WRONG! iC!=jF or iN!=jC! LINE 57")
+            s = s - rCoor[iF,iC] - rCoor[iC,iN] - rCoor[jC,jN]
+            s = s + rCoor[iF,jC] + rCoor[jC,iC] + rCoor[iC,jN] # change rCoor[jC,iN] to rCoor[jC,iC]
+            
+        else: # i>j
+            if j == 0: 
+                jF = randomList[-1]
+            else:
+                jF   = randomList[j-1]
+    
+            jC  = randomList[j]
+            jN = randomList[j+1]
+    
+            iF = randomList[i-1]
+            iC = randomList[i]
+            if i == lList-1: 
+                iN = randomList[0]
+            else:
+                iN = randomList[i+1] 
+            
+            if jC!=iF or jN!=iC: print("WRONG! jC!=iF or jN!=iC! LINE 78")
+            s = s - rCoor[jF,jC] - rCoor[jC,jN] - rCoor[iC,iN]
+            s = s + rCoor[jF,iC] + rCoor[iC,jC] + rCoor[jC,iN]
+    else:
+        
+        if i == 0: 
+            iF = randomList[-1]
+        else:
+            iF   = randomList[i-1]
+    
+        iC  = randomList[i]
+        
+        if i == lList-1: 
+            iN = randomList[0]
+        else:
+            iN = randomList[i+1]
+    
+        if j == 0: 
+            jF = randomList[-1]
+        else:
+            jF   = randomList[j-1]
+    
+        jC  = randomList[j]
+        if j == lList-1: 
+            jN = randomList[0]
+        else:
+            jN = randomList[j+1]
+            
+        s = s - rCoor[iF,iC] - rCoor[iC,iN] - rCoor[jF,jC] - rCoor[jC,jN]
+        s = s + rCoor[iF,jC] + rCoor[jC,iN] + rCoor[jF,iC] + rCoor[iC,jN]  
+    return s
+
+# Function to calculate the initial total distance or time of the tour
 def distance(randomList, rCoor):
     s = 0.0
     for i in range(N):
         j = randomList[i-1]
         k = randomList[i]
         s += rCoor[j,k]
-    j = randomList[-1]
-    k = randomList[0]
-    s += rCoor[j,k]
     return s
 
 # output of the score (distance vs time steps)
@@ -116,7 +188,7 @@ def cpu_stats():
 ## If you need animation?
 animation = False
 ## If you need to record score vs time step?
-scoreVsTime = True
+scoreVsTime = False
 
 ## Set up Case and load matrix of time or distance for each pair of cities.
 # case = 1: car Time. 
@@ -130,8 +202,8 @@ case = 4
 Tmax = 1.0
 Tmin = 1e-2
 tau = 1e3
-targetScore = 13.92 # carTime 79. busTime = 118.  pedestrianTime = 116.
-                    # carDistance 13.916. pedestrianDistance = 7.918
+targetScore = 13.916 # carTime 78. busTime = 117.  pedestrianTime = 115.
+                    # carDistance 13.916. pedestrianDistance = 7.844
 ###############################################################################
 
 # Load world heritage sites locations
@@ -190,7 +262,7 @@ initScore = score
 minScore = initScore
 msg = "Initial score = {:.5f}\n".format(initScore)
 
-
+oldScore = score
 
 # Write the log.txt file for the first time.
 writeLog(msg)
@@ -223,7 +295,6 @@ while (score>targetScore):
         # Set up another initial configuration
         randomList = rand.sample(range(0, N), N)
 
-        
         ## Change sites dataframe to rCoor array
         rCoor = np.empty([N,N])
         for i in range(N):
@@ -274,16 +345,24 @@ while (score>targetScore):
         # Swap them and calculate the change in score
         oldScore = score
         
-        randomList[i], randomList[j] = randomList[j], randomList[i]
-        
         rPlot[i,0],rPlot[j,0] = rPlot[j,0],rPlot[i,0]
         rPlot[i,1],rPlot[j,1] = rPlot[j,1],rPlot[i,1]
         rPlot[i,2],rPlot[j,2] = rPlot[j,2],rPlot[i,2]
         rPlot[i,3],rPlot[j,3] = rPlot[j,3],rPlot[i,3]
         
-        score = distance(randomList, rCoor)        
+        score = distanceUpdate(i,j,oldScore,randomList,rCoor)
+        
+        randomList[i], randomList[j] = randomList[j], randomList[i]
+        scoreCheck = distance(randomList, rCoor)
+        if abs(score-scoreCheck)>1e-4:
+            randomList[i], randomList[j] = randomList[j], randomList[i]
+            msg = "Score Error! Line 359.\n" +\
+                  "i = {}, j = {}, randomList[i] = {}, randomList[j] = {}\n".format(i,j,randomList[i],randomList[j]) +\
+                  "score = {}, scoreCheck = {}".format(score,scoreCheck)
+            writeLog(msg)
+            sys.exit()
+        
         deltaScore = score - oldScore
-        #print("deltaScore = {:.5f}".format(deltaScore))
 
         try:
             ans = np.exp(-deltaScore/T)
@@ -308,23 +387,10 @@ while (score>targetScore):
                 writeLog(msg)
                 msg = "distance: {}".format(distance(randomList, rCoor))
                 writeLog(msg)
-                msg = "Error Line 262"
+                msg = "Error Line 390"
                 writeLog(msg)
-                sys.exit(msg)
-        
-        if score < minScore: 
-            minScore = score
-            outPutScrVSTime(tRecord, scoreRecord)
-            outPutSitesOrder(randomList)
-            dt = datetime.now()
-            msg = str(dt.year) + '/' + str(dt.month)  + '/' + str(dt.day) + ' ' +\
-                  str(dt.hour) + ':' + str(dt.minute) + ':' + str(dt.second) +'\t'
-            writeLog(msg)
-            msg = "Delta score = {:.5f}\t".format(deltaScore)
-            writeLog(msg)
-            msg = "New score = {:.5f}\n".format(score)
-            writeLog(msg)
-            
+                sys.exit()
+                    
         if animation == True:    
             # Update the visualization every 100 moves
             if t%100==0:
@@ -339,6 +405,19 @@ while (score>targetScore):
             scoreRecord += [score]
         
         #writeLog(cpu_stats())
+        
+        if score < minScore: 
+            minScore = score
+            outPutScrVSTime(tRecord, scoreRecord)
+            outPutSitesOrder(randomList)
+            dt = datetime.now()
+            msg = str(dt.year) + '/' + str(dt.month)  + '/' + str(dt.day) + ' ' +\
+                  str(dt.hour) + ':' + str(dt.minute) + ':' + str(dt.second) +'\t'
+            writeLog(msg)
+            msg = "Delta score = {:.5f}\t".format(deltaScore)
+            writeLog(msg)
+            msg = "New score = {:.5f}\n".format(score)
+            writeLog(msg)        
         
     t0 = t0 + t # go to next time "lump"
     firstInitial = False
